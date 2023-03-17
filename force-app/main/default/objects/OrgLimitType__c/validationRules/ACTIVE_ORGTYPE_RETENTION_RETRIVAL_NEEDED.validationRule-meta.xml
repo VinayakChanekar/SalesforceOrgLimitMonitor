@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ACTIVE_ORGTYPE_RETENTION_RETRIVAL_NEEDED</fullName>
+    <active>true</active>
+    <description>An active org limit type should have valid Retention Period, Retrieval Frequency and Threshold Limit.</description>
+    <errorConditionFormula>AND(IsActive__c, 
+OR( 
+ISNULL( RetentionPeriod__c ), 
+ISNULL( RetrievalFrequency__c ),
+ISNULL(  AlertThreshold__c  )
+)
+)</errorConditionFormula>
+    <errorMessage>Active records should have valid Retention Period, Retrieval Frequency and Alert Threshold</errorMessage>
+</ValidationRule>

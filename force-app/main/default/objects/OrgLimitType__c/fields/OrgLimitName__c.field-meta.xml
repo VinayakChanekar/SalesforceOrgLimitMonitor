@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OrgLimitName__c</fullName>
+    <caseSensitive>false</caseSensitive>
+    <description>Api Name of the Org Limit key</description>
+    <externalId>false</externalId>
+    <label>Org Limit Name</label>
+    <length>126</length>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>

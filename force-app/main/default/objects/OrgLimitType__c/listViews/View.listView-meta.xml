@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>View</fullName>
+    <columns>NAME</columns>
+    <columns>OrgLimitName__c</columns>
+    <columns>AlertThreshold__c</columns>
+    <columns>RetentionPeriod__c</columns>
+    <columns>RetrievalFrequency__c</columns>
+    <columns>IsActive__c</columns>
+    <filterScope>Mine</filterScope>
+    <label>Org Limit List</label>
+</ListView>
