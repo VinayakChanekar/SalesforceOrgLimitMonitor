@@ -17,13 +17,19 @@
         <inputParameters>
             <name>emailAddresses</name>
             <value>
-                <stringValue>rasala_yadav@persistent.com</stringValue>
+                <stringValue>veena_veerabathini@persistent.com</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </inputParameters>
         <inputParameters>
             <name>emailSubject</name>
             <value>
-                <elementReference>subjectformail</elementReference>
+                <elementReference>subjectbody</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
@@ -129,7 +135,12 @@
     <textTemplates>
         <name>sendlimitexceedsemail</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;The limit for {!get_org_limit_records.Name} has exceeded the threshold configured.&lt;/p&gt;&lt;p&gt;Current Value: {!$Record.Usage__c}&lt;/p&gt;&lt;p&gt;Limit: {!$Record.MaxLimit__c}&lt;/p&gt;&lt;p&gt;Percentage of Limit: {!$Record.UsagePercentage__c}&lt;/p&gt;&lt;p&gt;Alert Threshold: {!get_org_limit_records.AlertThreshold__c}&lt;/p&gt;</text>
+        <text>&lt;p&gt;The limit for {!get_org_limit_records.OrgLimitName__c} has exceeded the threshold configured.&lt;/p&gt;&lt;p&gt;Current Value: {!$Record.Usage__c}&lt;/p&gt;&lt;p&gt;Limit: {!$Record.MaxLimit__c}&lt;/p&gt;&lt;p&gt;Percentage of Limit: {!$Record.UsagePercentage__c}&lt;/p&gt;&lt;p&gt;Alert Threshold: {!get_org_limit_records.AlertThreshold__c}&lt;/p&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>subjectbody</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Salesforce Limit Exceed for {!get_org_limit_records.OrgLimitName__c}</text>
     </textTemplates>
     <textTemplates>
         <name>subjectformail</name>
