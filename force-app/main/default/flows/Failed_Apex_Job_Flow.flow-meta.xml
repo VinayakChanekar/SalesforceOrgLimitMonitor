@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Failed_Apex_Email_Action</name>
+        <label>Failed Apex Email Action</label>
+        <locationX>176</locationX>
+        <locationY>972</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>EmailBody</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <stringValue>vinayak_chanekar@gmail.com</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>EmailSubject</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>57.0</apiVersion>
+    <assignments>
+        <name>Add_async_apex_job_records_to_table</name>
+        <label>Add async apex job records to table</label>
+        <locationX>264</locationX>
+        <locationY>636</locationY>
+        <assignmentItems>
+            <assignToReference>tableMarkup</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>row</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Iterate_failed_jobs</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>end_table_markup</name>
+        <label>end table markup</label>
+        <locationX>176</locationX>
+        <locationY>852</locationY>
+        <assignmentItems>
+            <assignToReference>tableMarkup</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;/table&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Failed_Apex_Email_Action</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>insertHeaderToTable</name>
+        <label>insertHeaderToTable</label>
+        <locationX>176</locationX>
+        <locationY>396</locationY>
+        <assignmentItems>
+            <assignToReference>tableMarkup</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>tableHeaders</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Iterate_failed_jobs</targetReference>
+        </connector>
+    </assignments>
+    <environments>Default</environments>
+    <formulas>
+        <name>DataTime24HoursAgo</name>
+        <dataType>DateTime</dataType>
+        <expression>{!$Flow.CurrentDateTime} - 1</expression>
+    </formulas>
+    <formulas>
+        <name>row</name>
+        <dataType>String</dataType>
+        <expression>&apos;&lt;tr&gt;&lt;td style=&quot;border: 1px solid black;&quot;&gt;&apos; + TEXT({!Iterate_failed_jobs.CreatedDate}) + 
+&apos;&lt;/th&gt;&lt;td style=&quot;border: 1px solid black;&quot;&gt;&apos; + {!Iterate_failed_jobs.ApexClass.Name} + 
+&apos;&lt;/th&gt;&lt;td style=&quot;border: 1px solid black;&quot;&gt;&apos; + TEXT({!Iterate_failed_jobs.JobType}) + 
+&apos;&lt;/th&gt;&lt;td style=&quot;border: 1px solid black;&quot;&gt;&apos; + TEXT({!Iterate_failed_jobs.Status}) + 
+&apos;&lt;/th&gt;&lt;td style=&quot;border: 1px solid black;&quot;&gt;&apos; + {!Iterate_failed_jobs.ExtendedStatus} + 
+&apos;&lt;/th&gt;&lt;/tr&gt;&apos;</expression>
+    </formulas>
+    <interviewLabel>Failed Apex Job Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Failed Apex Job Flow</label>
+    <loops>
+        <name>Iterate_failed_jobs</name>
+        <label>Iterate failed jobs</label>
+        <locationX>176</locationX>
+        <locationY>516</locationY>
+        <collectionReference>Get_Failed_Apex</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Add_async_apex_job_records_to_table</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>end_table_markup</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Failed_Apex</name>
+        <label>Get Failed Apex</label>
+        <locationX>176</locationX>
+        <locationY>276</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>insertHeaderToTable</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CreatedDate</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <elementReference>DataTime24HoursAgo</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AsyncApexJob</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Failed_Apex</targetReference>
+        </connector>
+        <schedule>
+            <frequency>Daily</frequency>
+            <startDate>2023-03-24</startDate>
+            <startTime>15:00:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>EmailBody</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;List of Failed Asynchronous Apex Jobs for last 24 hours.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;{!tableMarkup}&lt;/p&gt;</text>
+    </textTemplates>
+    <variables>
+        <name>EmailAddressList</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>EmailSubject</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Async Apex Job Failures</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>tableHeaders</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>&lt;tr&gt;  &lt;th style=&quot;border: 1px solid black;&quot;&gt;CreatedDate&lt;/th&gt;  &lt;th style=&quot;border: 1px solid black;&quot;&gt;Apex Class Name&lt;/th&gt;  &lt;th style=&quot;border: 1px solid black;&quot;&gt;Job Type&lt;/th&gt;  &lt;th style=&quot;border: 1px solid black;&quot;&gt;Status&lt;/th&gt;  &lt;th style=&quot;border: 1px solid black;&quot;&gt;Error Message&lt;/th&gt; &lt;/tr&gt;</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>tableMarkup</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>&lt;table style=&quot;width:100%; border: 1px solid black;&quot;&gt;</stringValue>
+        </value>
+    </variables>
+</Flow>
