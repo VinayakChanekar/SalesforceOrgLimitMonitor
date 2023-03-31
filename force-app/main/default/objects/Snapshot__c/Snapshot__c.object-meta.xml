@@ -165,7 +165,6 @@
         <searchResultsAdditionalFields>CREATED_DATE</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>RECORDTYPE</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>OrgLimitName__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>ApexJobName__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>IsExpired__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
